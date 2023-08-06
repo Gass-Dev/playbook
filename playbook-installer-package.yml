@@ -1,0 +1,19 @@
+---
+- name: Test actions locales
+  hosts: 127.0.0.1
+  connection: local
+  become: yes
+  gather_facts: yes
+
+  tasks:
+    # Rajouter 3 packages
+    - name: Install a list of packages
+      ansible.builtin.apt:
+        name:
+          - bcrypt
+          - express
+          - webpack
+          - jsonwebtoken
+          - nodemon
+          - sqlite3
+        state: present

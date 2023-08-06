@@ -1,0 +1,44 @@
+---
+- name: Test actions locales
+  # Playbook complet en local, alternative à delegate_to & local_action
+  hosts: 127.0.0.1
+  connection: local
+  become: yes
+  gather_facts: yes
+
+  vars:
+    prenoms:
+      - Gwen
+      - Max
+      - Steeve
+      - Eunji
+      - Belcacem
+
+  tasks:
+    # Commandes ansible classiques
+    - name: Dit bonjour en local
+      file: 
+        path: hello.txt
+        state: touch
+
+    - name: Change file ownership, group, and permissions
+      ansible.builtin.file:
+        path: hello.txt
+        owner: Gwen
+        group: staff
+        mode: '0644'
+
+    - name: Générer un prénom aléatoire
+      set_fact:
+        prenom_aleatoire: "{{ prenoms | random }}"
+
+    - name: Utiliser hello.txt comme modèle pour générer hello_copy.txt
+      ansible.builtin.template:
+        src: templates/hello.txt
+        dest: templates/hello_copy2.txt
+        owner: Gwen
+        group: staff
+        mode: '0644'
+
+
+...
